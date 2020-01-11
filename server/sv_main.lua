@@ -24,6 +24,7 @@ AddEventHandler("redemrp_respawn:FirstSpawn",function()
         charID = user.getSessionVar("charid")
     end)
     GetCoords(_id,charID,_source)
+
 end)
 
 function GetCoords(_id,_characterID,_source)
@@ -34,17 +35,17 @@ function GetCoords(_id,_characterID,_source)
         ['@id']   = _id,
         ['@charid'] = _characterID,
     },  function (result)
-        if result then 
+        if result[1] then 
             for k,v in ipairs(result) do
                 local kekw = json.decode(v.coords)
                 TriggerClientEvent("redemrp_respawn:FirstSpawnClient",_source,kekw)
             end
         else
             TriggerClientEvent("redemrp_respawn:FirstSpawnClient",_source)
+            TriggerClientEvent("redemrp_respawn:SaveFromAndToServer",_source,nil)
         end
 
     end)
-
     
 end
 
@@ -55,7 +56,7 @@ function CheckCoords(_id,_characterID)
         ['@id']   = _id,
         ['@charid'] = _characterID,
     },  function (result)
-        if result then
+        if result[1] then
             kekCheck = true
         else
             kekCheck = false
@@ -83,7 +84,7 @@ end
 
 function CreateCoords(_id,_characterID,coords)
     local kekw = json.encode({x = coords.x, y = coords.y, z = coords.z})
-    MySQL.Async.execute('INSERT INTO coords (identifier, characterid, coords) VALUES (@identifier, @charid, @coords)',
+    MySQL.Async.execute('INSERT INTO coords (identifier, characterid, coords) VALUES (@id, @charid, @coords)',
     {
         ['@id']   = _id,
         ['@charid'] = _characterID,

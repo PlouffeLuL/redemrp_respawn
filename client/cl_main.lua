@@ -127,7 +127,7 @@ function CoordsSave()
 	Citizen.CreateThread(function()
 		while true do 
 			if Config.SaveCoords then
-				Wait(Config.SaveDelay)
+				Wait(10000)
 				local coordss = GetEntityCoords(PlayerPedId())
 				TriggerServerEvent("redemrp_respawn:SaveCoordsFromClient", coordss)
 			end
@@ -135,12 +135,16 @@ function CoordsSave()
 	end)
 end
 
+RegisterNetEvent("redemrp_respawn:SaveFromAndToServer")
+AddEventHandler("redemrp_respawn:SaveFromAndToServer", function()
+	local coordss = GetEntityCoords(PlayerPedId())
+	TriggerServerEvent("redemrp_respawn:SaveCoordsFromClient", coordss)
+end)
+
 RegisterNetEvent("redemrp_respawn:FirstSpawnClient")
 AddEventHandler("redemrp_respawn:FirstSpawnClient",function(coords)
-	
-	local _coords = {coords.x,coords.y,coords.z}
+
 	local ply = PlayerId()
-	
 	DoScreenFadeIn(500)
 	ShutdownLoadingScreen()
 	SetEntityVisible(ply, true)
@@ -150,9 +154,16 @@ AddEventHandler("redemrp_respawn:FirstSpawnClient",function(coords)
 	SetCamActive(Cam1, true)
 	RenderScriptCams(true, true, 1000, true, true)
 	Wait(1000)
-	
-	Cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x,coords.y,coords.z+6, 300.00,0.00,0.00, 100.00, false, 0)
-	PointCamAtCoord(Cam2, coords.x,coords.y,coords.z+3)
+
+	if coords ~= nil then 
+		local _coords = {coords.x,coords.y,coords.z}
+		Cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", coords.x,coords.y,coords.z+6, 300.00,0.00,0.00, 100.00, false, 0)
+		PointCamAtCoord(Cam2, coords.x,coords.y,coords.z+3)
+	else 
+		Cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", Config.SingleFirstSpawn.x,Config.SingleFirstSpawn.y,Config.SingleFirstSpawn.z+6, 300.00,0.00,0.00, 100.00, false, 0)
+		PointCamAtCoord(Cam2, Config.SingleFirstSpawn.x,Config.SingleFirstSpawn.y,Config.SingleFirstSpawn.z+3)
+	end
+
 	SetCamActiveWithInterp(Cam2, Cam1, 5000, false, false)
 	Wait(5000)
 	
@@ -163,7 +174,6 @@ AddEventHandler("redemrp_respawn:FirstSpawnClient",function(coords)
 	DisplayRadar(true)
 	
 	firstspawn = false
-	
 	if Config.UsingInventory then
 		TriggerServerEvent("player:getItems", source)
 	end
@@ -171,7 +181,6 @@ AddEventHandler("redemrp_respawn:FirstSpawnClient",function(coords)
 	if Config.UsingClothes then
 		LoadClothes()
 	end
-	
 	if new_character == 1 then
 		TriggerEvent("redemrp_skin:openCreator")
 		new_character = 0
@@ -179,7 +188,6 @@ AddEventHandler("redemrp_respawn:FirstSpawnClient",function(coords)
 		TriggerServerEvent("redemrp_skin:loadSkin", function(cb)
 		end)
 	end
-
 	if coords == nil then 
 		NetworkResurrectLocalPlayer(Config.SingleFirstSpawn.x,Config.SingleFirstSpawn.y,Config.SingleFirstSpawn.z)
 	else
