@@ -305,13 +305,3 @@ RegisterNUICallback('select', function(spawn, cb)
 		else end
 	end
 end)
-
-RegisterCommand("KEKE",function(source, args, raw)
-	-- TriggerServerEvent("redemrp_respawn:FirstSpawn")
-	CoordsSave()
-end)
-
-RegisterCommand("KOKO",function(source, args, raw)
-	TriggerServerEvent("redemrp_respawn:FirstSpawn")
-	-- CoordsSave()
-end)

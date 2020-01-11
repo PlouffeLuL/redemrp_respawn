@@ -27,17 +27,20 @@ AddEventHandler("redemrp_respawn:FirstSpawn",function()
 end)
 
 function GetCoords(_id,_characterID,_source)
-    local _coords = {}
+
 
     MySQL.Async.fetchAll('SELECT * FROM coords WHERE identifier = @id AND characterid = @charid',
     {
         ['@id']   = _id,
         ['@charid'] = _characterID,
     },  function (result)
-        
-        for k,v in ipairs(result) do
-            local kekw = json.decode(v.coords)
-            TriggerClientEvent("redemrp_respawn:FirstSpawnClient",_source,kekw)
+        if result then 
+            for k,v in ipairs(result) do
+                local kekw = json.decode(v.coords)
+                TriggerClientEvent("redemrp_respawn:FirstSpawnClient",_source,kekw)
+            end
+        else
+            TriggerClientEvent("redemrp_respawn:FirstSpawnClient",_source)
         end
 
     end)
