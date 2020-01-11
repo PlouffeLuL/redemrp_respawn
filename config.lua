@@ -9,6 +9,22 @@ Config.kysCommand = true
 Config.UsingClothes = true -- If you are using RedEM-RP Clothing, set this to 'true' otherwise, keep it false (https://github.com/RedEM-RP/redemrp_clothing)
 Config.UsingInventory = true -- If you are using RedEM-RP Inventory, set this to 'true' otherwise, keep it false (https://github.com/RedEM-RP/redemrp_inventory)
 
+---------------------------------------------------Start of Single Spawn-----------------------------------------------------------------
+
+Config.UseSingleSpawn = true -- If you want to disable the use of RedEm-respawn multi spawn function and use a single spawn.
+Config.SingleSpawnUseLightning = true --Add a litle Lightning spark on player respawn
+Config.SaveCoords = true -- if you want to use auto Saved coords 
+Config.SaveDelay = 300000 --Delay between Db Coords Save (5 minutes default)
+                
+Config.SingleFirstSpawn = {x=2648.45,y=-1541.74,z=46.3} -- Set the coords for the First ever spawnpoint.
+Config.SingleRespawnSpawn = {x=2736.10,y=-1260.41,z=48.76} -- Use Only if you are using single spawn.
+Config.SingleSpawnHeading = 58.36 -- Heading of the single respawn point.
+Config.SingleSpawnCam = {x=2736.10,y=-1260.41,z=900.76} --Changes the camera location when respawning
+Config.LightningCoords = {x=2743.46,y=-1265.6,z=99.26} -- Coords of the Lightning
+
+--------------------------------------------------End of Single Spawn---------------------------------------------------------------------
+
+
 Config.Spawnpoints = { -- TEMPORARY
     {x=205.73,y=118.26,z=99.28},
     {x=211.18,y=161.95,z=97.42},
