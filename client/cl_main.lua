@@ -127,7 +127,7 @@ function CoordsSave()
 	Citizen.CreateThread(function()
 		while true do 
 			if Config.SaveCoords then
-				Wait(10000)
+				Wait(Config.SaveDelay)
 				local coordss = GetEntityCoords(PlayerPedId())
 				TriggerServerEvent("redemrp_respawn:SaveCoordsFromClient", coordss)
 			end
