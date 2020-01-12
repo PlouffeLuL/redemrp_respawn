@@ -84,8 +84,15 @@ end
 
 function CreateCoords(_id,_characterID,coords)
     local kekw = json.encode({x = coords.x, y = coords.y, z = coords.z})
-    MySQL.Async.execute('INSERT INTO coords (identifier, characterid, coords) VALUES (@id, @charid, @coords)',
-    {
+    local aamount = FetchAmount()
+
+    while aamount == nil do 
+        Wait(500)
+    end
+
+    MySQL.Async.execute('INSERT INTO coords (staticid, identifier, characterid, coords) VALUES (@staticid, @id, @charid, @coords)',
+    {   
+        ['@staticid'] = aamount,
         ['@id']   = _id,
         ['@charid'] = _characterID,
         ['@coords']   = kekw,
@@ -95,3 +102,26 @@ function CreateCoords(_id,_characterID,coords)
         end
     end)
 end
+
+function FetchAmount()
+    local amount = 0
+
+    MySQL.Async.fetchAll('SELECT * FROM coords',
+    {}, function(penis)
+        if penis[1] then
+            for i=1, #penis, 1 do 
+                amount = amount + 1
+            end
+        else
+            amount = 1
+        end
+
+    end)
+
+    while amount == 0 do 
+        Wait(500)
+    end
+
+    return amount
+end
+
