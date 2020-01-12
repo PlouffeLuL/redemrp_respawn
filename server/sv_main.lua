@@ -105,23 +105,23 @@ end
 
 function FetchAmount()
     local amount = 0
+    local cb = false
 
     MySQL.Async.fetchAll('SELECT * FROM coords',
     {}, function(penis)
         if penis[1] then
             for i=1, #penis, 1 do 
                 amount = amount + 1
+                cb = true
             end
         else
-            amount = 1
+            cb = true
         end
-
     end)
 
-    while amount == 0 do 
+    while not cb do 
         Wait(500)
     end
 
     return amount
 end
-
